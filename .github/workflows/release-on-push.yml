@@ -1,0 +1,24 @@
+# Given the fact that push within workflow using GitHub Action's token won't trigger another workflow
+# details in https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-when-your-workflow-runs/triggering-a-workflow#triggering-a-workflow-from-a-workflow
+# Having an independent Release workflow here to handle the manual tag pushes.
+name: Tagged Release
+on:
+  push:
+    tags:
+      - 'v*'
+permissions:
+  contents: write
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: cashapp/activate-hermit@12a728b03ad41eace0f9abaf98a035e7e8ea2318 # cashapp/activate-hermit@v1
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: scripts/release-go-binaries.sh

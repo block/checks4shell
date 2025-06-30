@@ -2,6 +2,7 @@
 
 # git-sv uses go-git underneath, and go-git at the moment cannot authenticate properly
 # in GitHub Actions ( see https://github.com/go-git/go-git/issues/474). Hence the script
+# to replace the functionality of git sv tag
 
 NEXT_VERSION=$(git sv next-version)
 
@@ -15,4 +16,4 @@ echo "New version $NEXT_VERSION found, creating the tag and pushing to remote"
 git tag "v${NEXT_VERSION}"
 git push origin "v${NEXT_VERSION}"
 
-goreleaser release
+./scripts/release-go-binaries.sh

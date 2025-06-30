@@ -1,4 +1,6 @@
-name: Release
+# This workflow bumps the version and release straight afterward
+# it covers the situation for the releasing through conventional commits
+name: Release with Conventional Commit
 on:
   workflow_run:
     workflows: ["CI"]
@@ -8,8 +10,8 @@ on:
 permissions:
   contents: write
 jobs:
-  tag:
-    name: Tag
+  tag-and-release:
+    name: Tag And Release
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
@@ -18,7 +20,7 @@ jobs:
         with:
           fetch-depth: 0
       - uses: cashapp/activate-hermit@12a728b03ad41eace0f9abaf98a035e7e8ea2318 # cashapp/activate-hermit@v1
-      - name: Release and push Tag
+      - name: Push tag and Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: scripts/release.sh
