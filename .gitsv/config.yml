@@ -1,0 +1,11 @@
+versioning:
+  update-major: [feat!] # Commit types used to bump major.
+  update-minor: [feat] # Commit types used to bump minor.
+  update-patch: [fix, perf, refactor] # Commit types used to bump patch.
+  # When type is not present on update rules and is unknown (not mapped on commit message types);
+  # if ignore-unknown=false bump patch, if ignore-unknown=true do not bump version.
+  ignore-unknown: true
+
+tag:
+  pattern: "v%d.%d.%d" # Pattern used to create git tag.
+  filter: "" # Enables you to filter for considerable tags using git pattern syntax.

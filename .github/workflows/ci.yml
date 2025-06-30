@@ -1,0 +1,43 @@
+on:
+  push:
+    branches:
+      - '**'
+    tags-ignore:
+      - '**'
+name: CI
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - uses: cashapp/activate-hermit@12a728b03ad41eace0f9abaf98a035e7e8ea2318 # cashapp/activate-hermit@v1
+      - name: Test
+        run: go test -race ./...
+  lint:
+    name: golangci-lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - uses: cashapp/activate-hermit@12a728b03ad41eace0f9abaf98a035e7e8ea2318 # cashapp/activate-hermit@v1
+      - name: Lint
+        run: golangci-lint run --timeout 4m0s
+  commit-msg-lint:
+    name: Commit message lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: cashapp/activate-hermit@12a728b03ad41eace0f9abaf98a035e7e8ea2318 # cashapp/activate-hermit@v1
+      - name: Show Git Version
+        run: git --version
+      - name: Persist message for the commit
+        run: git show -s --format=%B > .git/COMMIT_LATEST
+      - name: Cat latest commit message
+        run: cat .git/COMMIT_LATEST
+      - name: Commit Lint
+        run: git-sv vcm --path . --file .git/COMMIT_LATEST --source=commit

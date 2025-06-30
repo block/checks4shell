@@ -1,0 +1,24 @@
+version: 2
+before:
+  hooks:
+    - go mod tidy
+env: # disable CGO to make compiled binaries work smoother in different environments
+  - CGO_ENABLED=0
+builds:
+  - goos:
+      - linux
+      - darwin
+    goarch:
+      - arm64
+      - amd64
+    goarm:
+      - "6"
+    main: .
+    binary: checks4shell
+    ldflags: -s -w -X github.com/block/checks4shell/cmd.version={{.Version}}
+archives:
+  - name_template: '{{ .Binary }}-{{ .Version }}-{{ .Os }}-{{ .Arch }}{{ if .Arm }}v{{.Arm }}{{ end }}'
+    files:
+      - README*
+checksum:
+  name_template: 'checksums.txt'
