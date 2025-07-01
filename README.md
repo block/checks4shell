@@ -3,8 +3,14 @@
 
 ![gif showing live run checks4shell](./doc/img/demo-run.gif)
 
+## Installation
+`checks4shell` publishes compiled binaries in its GitHub releases. While it could be downloaded and unpacked, 
+[Hermit](https://cashapp.github.io/hermit/) provides an easy way to get `checks4shell` into your repository. 
+In a Hermit enabled repository, simply do `hermit install checks4shell` and it will be ready for use. Plus,
+another benefit of using via a `Hermit` package is that [renovate](https://docs.renovatebot.com/) could be used to automate [its version update](https://cashapp.github.io/hermit/usage/renovate/).
+
 ## Usage
-A view of how checks4shell will be used from the command line is like the following
+A view of how `checks4shell` will be used from the command line is like the following
 
 ```shell
 checks4shell run \ 
